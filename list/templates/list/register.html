@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+        <title>Registration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'css/animate-custom.css' %}" />
+    </head>
+    <body>
+              <div class="container">
+
+            <header>
+                <h1>Register</h1>
+            </header>
+            <section>
+                <div id="container_demo" >
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            <form  action="" method="POST">
+                                {% csrf_token %}
+                                <h1> Sign up </h1>
+                                <p>
+                                    {{form.username.label}}
+                                    {{form.username}}
+                                </p>
+                                <p>
+                                     {{form.email.label}}
+                                    {{form.email}}
+                                </p>
+                                <p>
+                                    {{form.password1.label}}
+                                    {{form.password1}}
+                                </p>
+                                <p>
+                                    {{form.password2.labe2}}
+                                    {{form.password2}}
+                                </p>
+                                <p class="signin button">
+									<input type="submit" value="Sign up"/>
+								</p>
+
+                                {{form.errors}}
+
+                                <p class="change_link">
+									Already a member ?
+									<a href="{% url 'login' %}" class="to_register"> Go and log in </a>
+								</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

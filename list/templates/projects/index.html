@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>My Project</title>
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col">
+            <div class="col-md-6">
+                <div class="card text-center text-white  mb-3" id="total">
+                    <div class="card-header">
+                        <h5 class="card-title">Total Project - User</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{total_project}} - {{request.user}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md">
+            <h5>Projects:</h5>
+            <hr>
+            <div class="card card-body">
+                <a class="prevent-submit btn btn-primary  btn-sm btn-block" href="{% url 'project_create' %}">Create Project</a>
+                <a class="prevent-submit btn btn-primary  btn-sm btn-block" href="{% url 'task_create' %}">Create Task</a>
+                {% if total_project != 0 %}
+                <table class="table table-sm">
+                    <tr>
+                        <th>ID</th>
+                        <th>Project Name</th>
+                        <th></th>
+                    </tr>
+                    {% for project in projects %}
+                        <tr>
+                            <td>{{project.id}}</td>
+                            <td>{{project.name}}</td>
+                            <td><a class="btn btn-sm btn-info" href="{{ project.get_absolute_url }}">View</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <p>You have not created any projects at this time</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% else %}
+<p>Щоб почати увійдіть або зареєструйтесь</p>
+{% endif %}
+
+
+{% endblock %}

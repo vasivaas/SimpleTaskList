@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>Delete project</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md">
+		<div class="card card-body">
+			<h5>Delete Current User</h5>
+			<hr>
+			<p>Are you sure you want to delete:  {{ project }}</p>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-sm btn-info"  value="Yes, delete." />
+            </form>
+		</div>
+	</div>
+</div>
+{% endblock %}

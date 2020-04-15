@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>Create new project</title>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+	    <div class="col-md">
+            <div class="card card-body">
+                <h5>Create New Project:</h5>
+			    <hr>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <input type="submit" class="btn btn-sm btn-info" value="Submit" />
+                </form>
+		    </div>
+        </div>
+
+    </div>
+{% endblock %}

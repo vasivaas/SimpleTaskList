@@ -1,0 +1,76 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>Project Info</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>{{project_info.name}}</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{{ project_info.get_absolute_url }}/update">Update Project</a>
+            {% if total_tasks == 0 %}
+			<a class="btn btn-danger  btn-sm btn-block" href="{{ project_info.get_absolute_url }}/delete">Delete Project</a>
+            {% else %}
+            <p>Unable to delete project containing task</p>
+            {% endif %}
+		</div>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md">
+			<form method="get">
+				{{filter.form}}
+				<button class="btn btn-sm btn-info" type="submit">Search</button>
+			</form>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md">
+		<h5><strong>{{total_tasks}} tasks</strong> have been added to the project <strong>{{project_info.name}}</strong></h5>
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Id</th>
+					<th>Priority</th>
+                    <th>Name</th>
+                    <th>Status</th>
+					<th>Date Create</th>
+                    <th>Date deadline</th>
+                    <th></th>
+                    <th></th>
+
+				</tr>
+				{% for task in tasks %}
+					<tr>
+						{% if task.completed == True %}
+                        <td>{{task.id}}</td>
+						<strike><td>{{task.priority}}</td></strike>
+						<strike><td>{{task.name}}</td></strike>
+                        <td>{{task.completed}}</td>
+                        <strike><td>{{task.created_date}}</td></strike>
+			            <strike><td>{{task.deadline_date}}</td></strike>
+
+						{% else %}
+						<td>{{task.id}}</td>
+						<td>{{task.priority}}</td>
+						<td>{{task.name}}</td>
+                        <td>{{task.completed}}</td>
+                        <td>{{task.created_date}}</td>
+			            <td>{{task.deadline_date}}</td>
+						{% endif %}
+						{% if task.completed == False %}
+                        <td><a class="btn btn-sm btn-info" href="{% url 'task_update' task.id%}">Update Task</a></td>
+						{% endif %}
+                        <td><a class="btn btn-danger btn-sm btn-info" href="{% url 'task_delete' task.id%}">Delete Task</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
