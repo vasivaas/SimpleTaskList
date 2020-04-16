@@ -10,6 +10,9 @@
 		<div class="card card-body">
 			<h5>{{project_info.name}}</h5>
 			<hr>
+			 <a class="prevent-submit btn btn-primary  btn-sm btn-block" href="{% url 'task_create' project_info.id %}">Create Task</a>
+			<br>
+			<hr>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="{{ project_info.get_absolute_url }}/update">Update Project</a>
             {% if total_tasks == 0 %}
 			<a class="btn btn-danger  btn-sm btn-block" href="{{ project_info.get_absolute_url }}/delete">Delete Project</a>
