@@ -2,13 +2,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from .models import Task
+from .models import Task, Project
 
 
 class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'priority', 'deadline_date', 'project', 'completed']
+
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = '__all__'
 
 
 class CreateUserForm(UserCreationForm):
