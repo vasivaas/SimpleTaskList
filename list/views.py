@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .filters import TaskFilter
-from .forms import CreateUserForm, TaskForm
+from .forms import CreateUserForm, TaskForm, ProjectForm
 from .models import Project, Task
 
 
@@ -13,12 +13,15 @@ from .models import Project, Task
 # Create your views here.
 
 def index(request):
-    projects = Project.objects.all()
-    total_project = projects.count()
-    return render(request, 'projects/index.html', context= {
-        'projects': projects,
-        'total_project': total_project,
-    })
+    if request.user.is_authenticated:
+        projects = Project.objects.filter(user=request.user)
+        total_project = projects.count()
+        return render(request, 'projects/index.html', context={
+            'projects': projects,
+            'total_project': total_project,
+        })
+    else:
+        return redirect('login')
 
 
 def view_project_info(request, pk):
@@ -34,13 +37,26 @@ def view_project_info(request, pk):
         'filter': myFilter,
     })
 
-
+'''
 class ProjectCreate(CreateView):
+    project = Project.objects.filter(user=request.user)
     model = Project
-    fields = ['name']
-    initial = {'name':'Project name',}
+    fields = ['name', 'user']
+    initial = {'name':'Project name', 'user': project}
     success_url = reverse_lazy('index')
     template_name_suffix = '_create'
+'''
+def project_create(request):
+    user = request.user
+    form = ProjectForm(initial={'user': user})
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    return render(request, 'list/project_create.html', context={
+        'form': form
+    })
 
 
 class ProjectUpdate(UpdateView):
@@ -56,9 +72,11 @@ class ProjectDelete(DeleteView):
 
 
 def task_create(request):
+    project = Project.objects.filter(user=request.user)
     form = TaskForm()
     if request.method == 'POST':
         form = TaskForm(request.POST)
+        form.project = project
         if form.is_valid():
             form.save()
             return redirect('/')
