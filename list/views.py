@@ -71,15 +71,14 @@ class ProjectDelete(DeleteView):
     template_name_suffix = '_delete'
 
 
-def task_create(request):
-    project = Project.objects.filter(user=request.user)
-    form = TaskForm()
+def task_create(request,pk):
+    project = Project.objects.get(id=pk)
+    form = TaskForm(initial={'project': project})
     if request.method == 'POST':
         form = TaskForm(request.POST)
-        form.project = project
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('project/{id}'.format(id=project.id))
     return render(request, 'task/task_create.html', context={
         'form': form
     })
