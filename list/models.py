@@ -6,7 +6,7 @@ from django.urls import reverse
 # Create your models here.
 class Project(models.Model):
     name = models.CharField("Project name", max_length=100)
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, unique=False)
 
     def get_absolute_url(self):
         return reverse('project_info', args=[str(self.id)])
@@ -32,7 +32,7 @@ class Task(models.Model):
     )
     priority = models.CharField(max_length=1, choices=TASK_PRIORITY, blank=True, default='1', help_text='Select a task priority (1-low and 5-high)')
     completed = models.BooleanField(default=False)
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, unique=False)
 
 
     def __str__(self):
