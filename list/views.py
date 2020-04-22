@@ -47,12 +47,13 @@ class ProjectCreate(CreateView):
     template_name_suffix = '_create'
 '''
 def project_create(request):
-    user = request.user
-    form = ProjectForm(initial={'user': user})
+    form = ProjectForm()
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = request.user
+            project = Project(name=request.POST['name'], user=user)
+            project.save()
             return redirect('/')
     return render(request, 'list/project_create.html', context={
         'form': form
@@ -72,12 +73,16 @@ class ProjectDelete(DeleteView):
 
 
 def task_create(request,pk):
-    project = Project.objects.get(id=pk)
-    form = TaskForm(initial={'project': project})
+    form = TaskForm()
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            project = Project.objects.get(id=pk)
+            task = Task(name=request.POST['name'], priority=request.POST['priority'],
+                        project=project,
+                        deadline_date=request.POST['deadline_date'],
+                        completed=request.POST.get('completed', False))
+            task.save()
             return redirect('project/{id}'.format(id=project.id))
     return render(request, 'task/task_create.html', context={
         'form': form
