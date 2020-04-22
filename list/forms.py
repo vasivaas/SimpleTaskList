@@ -8,14 +8,15 @@ from .models import Task, Project
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = ['name', 'priority', 'deadline_date', 'project', 'completed']
+        fields = ['name', 'priority', 'deadline_date', 'completed']
+
 
 
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = '__all__'
-
+        fields = ['name']
+        
 
 class CreateUserForm(UserCreationForm):
     class Meta:
